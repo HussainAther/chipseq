@@ -1,0 +1,48 @@
+library(spp); #loads the spp library - tools for finding specific information about the chipseq data
+library(snow); #loads the snow library - used for workstations 
+cluster <- makeCluster(8); #make some clusters to perform our work 
+
+
+chip.data <- read.bam.tags("{snakemake.input.ip}"); # tags have the read information we gonna use
+input.data <- read.bam.tags("{snakemake.input.inp}"); 
+binding.characteristics <- get.binding.characteristics(chip.data,srange=c(50,500),bin=5,cluster=cluster); # cross-correlation profile for finding binding peak separation distance
+print(paste("binding peak separation distance =",binding.characteristics$peak$x)); 
+pdf(file="s_1.crosscorrelation.pdf",width=5,height=5)
+par(mar=c(3.5,3.5, 1.0, 0.5), mgp=c(2,0.65,0), cex=0.8); #parameters for the cross-correlational profile
+plot(binding.characteristics$cross.correlation,type='1',xlab="strand shift",ylab="cross-correlation"); #plots those cross-correlational data that it obtained. The y-axis should be the Pearson linear correlation coefficient between genome-wide profiles of tag density of positive and negative strands, shifted relative to each other by a distance specified on the x-axis. The peak position (red vertical line) indicates a typical distance separating positive- and negative-strand peaks associated with the stable binding positions.
+abline(v=binding.characteristics$peak$x,lty=2,col=2) #draw vertical line at the peaks 
+dev.off();
+
+
+chip.data.info<-select.informative.tags(chip.data,binding.characteristics); # restrict or remove singular positions with very high tag counts
+input.data.info<-select.informative.tags(input.data,binding.characteristics); 
+chip.data.qua <- remove.local.tag.anomalies(chip.data); #based on poisson model, there is a confidence interval for local tag density to determine what could be removed. we want to generally remove the positions where there are too many tags relative to the local background because those are considered to be anomalies rather than actual peaks. 
+input.data.qua <- remove.local.tag.anomalies(input.data);  
+tag.shift <- round(binding.characteristics$peak$x/2) # output smoothed tag density (subtracting re-scaled input) into a WIG file
+smoothed.density <- get.smoothed.tag.density(chip.data,control.tags=input.data,bandwidth=200,step=100,tag.shift=tag.shift); #matching tag density, finding the strands of comparable magnitude of expected distance. This will calculate genome-wide smoothed tag density (subtracting re-scaled input).
+writewig(smoothed.density,"example.density.wig","Example smoothed, background-subtracted tag density"); #writes out those tag densities to a file
+rm(smoothed.density);
+
+
+smoothed.enrichment.estimate <- get.smoothed.enrichment.mle(chip.data,input.data,bandwidth=200,step=100,tag.shift=tag.shift) #provides rough estiamte of enrichment profile. Given signal and control tag positions, the method calculates log2 signal to control enrichment esimates (maximum likelihood) for each chromosome, based on the smoothed tag density profile
+writewig(smoothed.enrichment.estimate,"example.enrichment.wig","Example smoothed maximum likelihood log2 enrichment estimate"); 
+enrichment.estimates <- get.conservative.fold.enrichment.profile(chip.data.qua,input.data.qua,fws=500,step=100,alpha=0.01); #As more pronounced binding positions are identified using smaller sequencing depth, spp compares the enirchment ratio of its window to the background  to find the binding positions that exceed a certain enrichment ratio. The enrichment ratio is the minimal saturated enrichment ratio (MSER). The saturation criteria that define the maximal acceptable slope of the saturation curve can be formulated as a requirement for stability of the set of predicted binding sites. 
+writewig(enrichment.estimates,"{snakemake.input.ip}.enrichment.estimates.wig","Example conservative fold-enrichment/depletion estimates shown on log2 scale"); 
+rm(enrichment.estimates);
+
+
+broad.clusters <- get.broad.enrichment.clusters(chip.data,input.data,window.size=1e3,z.thr=3,tag.shift=round(binding.characteristics$peak$x/2)) #Broad regions of enrichment, the window.size is higher. This scans chromosomes with a pre-defined window size, comparing scaled ChIP and input tag coutns to see if their ratio exceeds that expected from a Poisson process (normalized for dataset size).
+write.broadpeak.info(broad.clusters,"{snakemake.input.ip}.broadPeak") #  Writes out broad regions of enrichment determined by the get.broad.enrichment.clusters method in a broadPeak format.
+write.table(cbind(rep("X", length(broad.clusters$X$s)), broad.clusters$X$s, broad.clusters$X$e), file="{snakemake.output}", quote=FALSE, row.names=FALSE, col.names=FALSE, sep="\t")
+detection.window.halfsize <- binding.characteristics$whs; #new variable with the binding characteristics of the window
+print(paste("detected",sum(unlist(lapply(bp$npl,function(d) length(d$x)))),"peaks"));
+output.binding.positions(signal.data=chip.data,control.data=input.data,fdr=fdr,method=tag.lwcc,whs=detection.window.halfsize,cluster=cluster) # binding detection parameters
+bp <- find.binding.positions(signal.data=chip.data,control.data=input.data,fdr=fdr,method=tag.lwcc,whs=detection.window.halfsize,cluster=cluster) # Given the signal and optional control (input) data, determine location of the statistically significant point binding positions. 
+bp <- add.broad.peak.regions(chip.data,input.data,bp,window.size=1000,z.thr=3)
+write.narrowpeak.binding(bp,"{snakemake.input.ip}.narrowPeak")
+mser <- get.mser(chip.data,input.data,step.size=1e5,test.agreement=0.99,n.chains=8,cluster=cluster,fdr=fdr,method=tag.wtd,whs=detection.window.halfsize) #   Determine if the dataset has reached absolute saturation, or otherwise find minimal fold enrichment ratio above which the detection of peaks has stabilized enough to meet the saturation criteria.
+print(paste("MSER at a current depth is",mser));
+
+
+msers <- get.mser.interpolation(chip.data,input.data,step.size=1e5,test.agreement=0.99, target.fold.enrichment=2,n.chains=7,n.steps=6,cluster=cluster,fdr=fdr,method=tag.wtd,whs=detection.window.halfsize) # MSER generally decreases with increasing sequencing depth. This function interpolates the dependency of MSER on tag counts as a log-log linear function. The log-log fit is used to estimate the depth of sequencing required to reach desired target.fold.enrichment.
+print(paste("predicted sequencing depth =",round(unlist(lapply(msers,function(x) x$prediction))/1e6,5)," million tags"))

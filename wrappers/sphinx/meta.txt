@@ -1,0 +1,2 @@
+title: "sphinx wrapper"
+description: commands to create .rst file from the sphinx directory using the output from the Snakefile workflow

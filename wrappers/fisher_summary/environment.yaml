@@ -1,0 +1,9 @@
+channels:
+  - bioconda
+  - conda-forge
+
+dependencies:
+  - boost ==1.64
+  - bedtools
+  - matplotlib
+  - seaborn

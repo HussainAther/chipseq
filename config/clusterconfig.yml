@@ -1,0 +1,52 @@
+__default__:
+  prefix: "--time=10:00:00 --mem=4g --partition=quick,norm,niddk"
+bowtie2_index:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+bowtie2_map:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+bedtools:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+mark_duplicates:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+macs2:
+  prefix: "--time=10:00:00 --mem=16g --partition=quick,norm,niddk"
+spp:
+  prefix: "--time=10:00:00 --mem=16g --partition=quick,norm,niddk"
+samtools_sort:
+  prefix: "--time=10:00:00 --mem=16g --partition=quick,norm,niddk"
+samtools_index:
+  prefix: "--time=10:00:00 --mem=16g --partition=quick,norm,niddk"
+bedtools:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+bamcoverage:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+bigwigcompare:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+matrix_plot1:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+matrix_plot2:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+post_bedtools:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+chipqc1:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+chipqc2:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+spp2:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+fastqc:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+intervalstats1:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+intervalstats2:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+gat:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+fisher:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+jaccard:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+lineplots_by_sample:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"
+lineplots_by_kind:
+  prefix: "--time=4:00:00 --mem=16g --partition=quick,norm,niddk"

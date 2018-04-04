@@ -1,0 +1,2 @@
+name: "preplot wrapper"
+description: "this wrapper creates a file that can be loaded to create the scatterplots by kind and scatterplots by sample."

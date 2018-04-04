@@ -1,0 +1,2 @@
+name: "compute_matrix wrapper"
+description: "computes the matrices from the bedtools output."

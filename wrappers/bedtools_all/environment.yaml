@@ -1,0 +1,10 @@
+channels:
+    - bioconda
+    - conda-forge
+
+dependencies:
+    - bedtools
+    - pybedtools
+    - deeptools
+    - pysam
+    - python ==3.6

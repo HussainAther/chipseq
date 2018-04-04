@@ -1,0 +1,12 @@
+channels:
+ - bioconda
+# - conda-forge
+
+dependencies:
+# - r
+# - boost ==1.64
+# - r-fastcluster
+  - bedtools
+# - matplotlib
+# - numpy
+# - seaborn

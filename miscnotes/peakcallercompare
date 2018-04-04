@@ -1,0 +1,16 @@
+spp
++ finds anomalies and masks them out to ignore them 
++ compares peaks to whole genomes
++ + accuracy of detecting potential peaks depends on this
++ methods show calculation
++ subtract reads in same window
++ nonspecific size of data set determiens what's excluded.
++ library size weights normaliztion factor in what reads to remove
+
+macs2
++ lambda value
++ + conservative comparison of entire background
++ collapses anomalies to 1
++ pileup is made w/ChipSEq coverage track
++ pileup is signal
++ looks at all input regions. 

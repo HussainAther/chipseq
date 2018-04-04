@@ -1,0 +1,2 @@
+name: "bedtools_all wrapper"
+description: "runs bedtools commands to interpret the results of peak callers."

@@ -1,0 +1,2 @@
+name: "map wrapper"
+description: "this wrapper performs the analysis of the bedtools output. it makes heatmaps and clustermaps."

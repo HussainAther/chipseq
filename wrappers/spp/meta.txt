@@ -1,0 +1,2 @@
+name: "spp wrapper"
+description: "this wrapper makes sure that the bam files from the output of picard MarkDuplicates (and other picard tools) are ready to be used in the spp peak-caller."

@@ -1,0 +1,2 @@
+name: "correlations wrapper"
+description: "after creating the of bigWig tracks (scores per areas of genome) that have number of mapped reads. this matrix can be visualized as correlation plots"

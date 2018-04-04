@@ -1,0 +1,2 @@
+name: "bowtie2_index wrapper"
+description: "creates the SAM alignment (index) from the genome"

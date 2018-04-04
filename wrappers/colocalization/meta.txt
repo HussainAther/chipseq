@@ -1,0 +1,2 @@
+name: "post_colocalization wrapper"
+description: "this wrapper performs the analysis of the colocalization output. it gives a basic number comparison between gat and intervalstats output."

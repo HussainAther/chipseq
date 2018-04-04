@@ -1,0 +1,2 @@
+name: "scatterplots wrapper"
+description: "this wrapper creates scatterplots to get a plot of each sample on the same graph for each kind."

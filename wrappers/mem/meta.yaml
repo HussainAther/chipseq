@@ -1,0 +1,2 @@
+name: "bwa mem"
+description: Map reads with bwa mem

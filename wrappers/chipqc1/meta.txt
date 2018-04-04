@@ -1,0 +1,2 @@
+name: "chipqc wrapper"
+description: "runs chipqc commands to get analysis of read .bam files. This includes a summary table, coverage histogram, cross coverage, peak profile, fraction in peaks, and counts in peaks."

@@ -1,0 +1,2 @@
+name: "plot_heatmap wrapper"
+description: "plots heatmaps of the matrices from the bedtools output"

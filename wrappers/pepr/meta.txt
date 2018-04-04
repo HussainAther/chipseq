@@ -1,0 +1,2 @@
+name: "pepr wrapper"
+description: "runs the pepr chipseq peak-caller that finds the significant peaks from chipseq experiments."

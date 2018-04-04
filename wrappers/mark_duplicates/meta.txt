@@ -1,0 +1,2 @@
+wrapper: mark_duplicates 
+usage: use with picard in finding duplicate reads

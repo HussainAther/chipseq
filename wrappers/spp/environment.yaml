@@ -1,0 +1,9 @@
+channels:
+  - bioconda
+  - conda-forge
+
+dependencies:
+  - r
+  - r-spp
+  - boost ==1.64
+  - r-fastcluster

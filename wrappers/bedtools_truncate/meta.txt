@@ -1,0 +1,2 @@
+name: "bedtools_truncate wrapper"
+description: "runs pybedtools truncate commands to truncate chromosomes so that no areas are outside of the genome."

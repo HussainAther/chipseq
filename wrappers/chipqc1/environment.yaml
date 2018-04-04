@@ -1,0 +1,12 @@
+channels:
+    - bioconda
+    - conda-forge
+
+dependencies:
+    - python=2.7
+    - argparse
+    - bioconductor-biocparallel
+    - r-knitr
+    - r-rmarkdown
+    - r-reshape
+    - colorbrewer
